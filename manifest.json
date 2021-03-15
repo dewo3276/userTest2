@@ -1,0 +1,25 @@
+{
+  "name": "Time to Consider",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "<all_urls>",
+    "identity",
+    "background"
+  ],
+  "version": "1.0",
+  "manifest_version": 2,
+  "background": {
+    "page": "background.html",
+    "js": "firebase.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://cuboulder.zoom.us/*"],
+      "js": ["content.js"]
+    }],
+  "browser_action": {
+    "default_icon": "extension-icon.png"
+  },
+  "content_security_policy":"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
+}
