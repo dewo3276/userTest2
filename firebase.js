@@ -41,7 +41,7 @@ chrome.tabs.onRemoved.addListener(function(tabId, removed) {
 })
 
 function stopTimer() {
-  //send some signal to firebase about tabulated time
+  //send some signal to arduino about tabulated time
   endTime = new Date()
   sHours -= endTime.getHours()
   sMins -= endTime.getMinutes()
