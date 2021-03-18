@@ -1,4 +1,6 @@
-var timeNew, sHours, sMins, sSeconds, endTime, zoomTabId, message
+var timeNew, sHours, sMins, sSeconds, endTime, zoomTabId
+var alreadySent=false
+var zoomOpened=false
 var hits=0
 
 // Your web app's Firebase configuration
@@ -17,26 +19,41 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
 
-chrome.runtime.onMessage.addListener(
-  function(request,sender,sendResponse){
-    console.log("zoom window was opened")
-    console.log(sender.tab.id)
-    alert("Remeber to close the zoom window when you are done with class!")
-    zoomTabId=sender.tab.id
-    timeNew = new Date()
-    sHours = timeNew.getHours()
-    sMins = timeNew.getMinutes()
-    sSeconds = timeNew.getSeconds()
-  }
-)
+chrome.tabs.onActivated.addListener(onActivated)
+
+chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
+  zoomOpened=true
+})
+
+function onActivated(tabId, changeInfo, tab) {
+    chrome.tabs.get(tabId.tabId, function(tab){
+        console.log('New active tab: ' + tab.id)
+        chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+          if(alreadySent==false && zoomOpened==true)
+          {
+            zoomTabId=tab.id
+            console.log(zoomTabId)
+            console.log(tab.url)
+            alert("Remeber to close the zoom window when you are done with class!")
+            timeNew = new Date()
+            sHours = timeNew.getHours()
+            sMins = timeNew.getMinutes()
+            sSeconds = timeNew.getSeconds()
+            alreadySent=true
+          }
+        })
+    })
+}//, {url: [{hostPrefix: 'https://cuboulder.zoom.us'}]}
+
 
 chrome.tabs.onRemoved.addListener(function(tabId, removed) {
   if(tabId==zoomTabId)
   {
     alert("zoom tab closed. Times have been documented. Thank you!")
     stopTimer()
+    alreadySent=false
+    zoomOpened=false
   }
 })
 
@@ -60,6 +77,7 @@ function stopTimer() {
   {
     hits+=Math.ceil(sMins/30)
   }
+
 
   firebase.database().ref("userTimes").push({
     hits,

@@ -1,15 +1,17 @@
 {
   "name": "Time to Consider",
   "permissions": [
-    "activeTab",
-    "tabs",
-    "<all_urls>",
-    "identity",
-    "background",
-    "webRequest"
+    "background"
   ],
   "version": "1.0",
   "manifest_version": 2,
+  "content_scripts": [
+    {
+      "run_at": "document_start",
+      "matches": ["https://cuboulder.zoom.us/*"],
+      "js": ["content.js"]
+    }
+  ],
   "background": {
     "page": "background.html",
     "js": "firebase.js"
@@ -19,12 +21,6 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "content_scripts": [
-    {
-      "run_at": "document_idle",
-      "matches": ["https://cuboulder.zoom.us/*"],
-      "js": ["content.js"]
-    }],
   "browser_action": {
     "default_icon": "extension-icon.png"
   },
