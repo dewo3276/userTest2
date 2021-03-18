@@ -78,10 +78,13 @@ function stopTimer() {
     hits+=Math.ceil(sMins/30)
   }
 
-
-  firebase.database().ref("userTimes").push({
-    hits,
-    timeTotal,
-    endTime
-  })
+  if(sMins>=30 || sHours>=1)
+  {
+    firebase.database().ref("userTimes").push({
+      hits,
+      timeTotal,
+      endTime
+    })
+  }
+  hits=0
 }
