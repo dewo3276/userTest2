@@ -79,7 +79,8 @@ function stopTimer() {
   }
   if(sMins>=30 || sHours>=1)
   {
-    firebase.database().ref("userTimes").push({
+    firebase.database().ref("userTimes").set({Hits: hits})
+    firebase.database().ref("userTimes/previousUserTimes").push({
       hits,
       timeTotal,
       endTime
@@ -88,7 +89,8 @@ function stopTimer() {
   if(sMins<30 && sHours<1)
   {
     hits=1
-    firebase.database().ref("userTimes").push({
+    firebase.database().ref("userTimes").set({Hits: hits})
+    firebase.database().ref("userTimes/previousUserTimes").push({
       hits,
       timeTotal,
       endTime
