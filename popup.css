@@ -1,0 +1,14 @@
+body
+{
+  width: 600px;
+  height: 350px;
+}
+iframe
+{
+  display: block;
+  padding-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 560px;
+  height: 315px;
+}
